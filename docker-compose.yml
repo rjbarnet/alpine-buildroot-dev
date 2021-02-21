@@ -6,6 +6,8 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: br-alpine
+    stdin_open: true # docker run -i
+    tty: true        # docker run -t
     environment:
       TERM: "xterm-color"
     volumes:
