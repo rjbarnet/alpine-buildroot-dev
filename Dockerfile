@@ -1,15 +1,12 @@
 FROM alpine:3.13
 
-# build-base includes:
-#   binutils
-#   file
-#   fortify-headers
-#   g++
-#   gcc
-#   libc-dev
-#   make
-#   patch
+# Required packages not in manual
+#   python3 - need to build python3
+#   findutils - for rootfs fixup
+#   coreutils - can't use busybox for build scripts
 # Optional Packages
+#   ncurses - for ncurses terminal output
+#   ncurses-dev - for 'make menuconfig'
 #   sudo - added for add patches
 RUN apk update && \
     apk add --no-cache \
@@ -26,11 +23,14 @@ RUN apk update && \
         gcc \
         gzip \
         linux-headers \
+        make \
         musl-dev \
         musl-locales \
-        make \
+        ncurses \
+        ncurses-dev \
         patch \
         perl \
+        python3 \
         rsync \
         sed \
         sudo \
@@ -48,5 +48,6 @@ WORKDIR /home/br-user
 ENV HOME /home/br-user
 ENV LC_ALL en_US.UTF-8
 
-# Keep container alive once launched
-ENTRYPOINT ["/usr/bin/tail", "-f", "/dev/null"]
+CMD ["bash"]
+
+ENTRYPOINT ["/bin/bash", "-c"]
