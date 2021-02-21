@@ -1,0 +1,28 @@
+#!/bin/bash
+
+if [ -f "alpine-br.cfg" ]
+then
+    export $(grep -v '^#' alpine-br.cfg | xargs)
+fi
+
+BR2_GIT_REPO="${UPSTREAM_BR2_GIT_REPO:-git://git.buildroot.net/buildroot}"
+
+if [ ! -d work/ ]
+then
+    mkdir -p work/
+fi
+
+if [ ! -d work/buildroot/ ]
+then
+    if [ -n "${PERSONAL_BR2_GIT_REPO}" ]
+    then
+        git clone "${PERSONAL_BR2_GIT_REPO}" work/buildroot
+        cd work/buildroot
+        git remote add upstream "${BR2_GIT_REPO}"
+        git fetch --all
+    else
+        git clone "${BR2_GIT_REPO}"
+    fi
+fi
+
+docker-compose up --build -d
