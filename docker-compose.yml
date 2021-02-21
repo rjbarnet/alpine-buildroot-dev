@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  br_alpine:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: br-alpine
+    environment:
+      TERM: "xterm-color"
+    volumes:
+      - type: bind
+        source: ./work
+        target: /home/br-user/work
+    stop_signal: SIGINT
