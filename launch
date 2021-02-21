@@ -25,4 +25,5 @@ then
     fi
 fi
 
-docker-compose up --build -d
+docker-compose build
+docker-compose run --rm br_alpine
